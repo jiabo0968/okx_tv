@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+
+# 日志文件
+*.log
+
+# IDE配置
+.vscode/
+.idea/
+
+# SSL证书
+*.pem
+*.key
+*.crt
+
+# 其他
+.DS_Store
