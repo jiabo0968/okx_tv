@@ -76,7 +76,7 @@ rm -rf Python-3.10.9*
 
 ### 1. 一键安装程序脚本自动安装
 ```bash
-wget https://raw.githubusercontent.com/jiabo09683/okxdjtv/main/deploy.sh && \chmod +x deploy.sh && \./deploy.sh
+wget https://raw.githubusercontent.com/jiabo0968/okx_tv/main/deploy.sh && \chmod +x deploy.sh && \./deploy.sh
 ```
 
 ### 2. 配置说明
@@ -107,6 +107,9 @@ USE_DOMAIN=true            # true=使用域名, false=使用IP
 DOMAIN_NAME=your.domain.com  #填写解析的域名
 USE_HTTPS=true            # 是否启用HTTPS
 
+# 服务端口
+PORT=5000
+
 # 通知设置
 WECHAT_BOT_URL=你的企业微信机器人webhook地址
 ```
@@ -115,7 +118,7 @@ WECHAT_BOT_URL=你的企业微信机器人webhook地址
 
 1. 检查服务状态:
 ```bash
-supervisorctl status okxdjtv
+supervisorctl status okx_tv
 ```
 
 2. 检查SSL证书:
@@ -125,7 +128,7 @@ curl https://你的域名
 
 3. 查看运行日志:
 ```bash
-tail -f /var/log/okxdjtv/out.log
+tail -f /var/log/okx_tv/out.log
 ```
 
 ## 使用说明
@@ -163,22 +166,22 @@ supervisorctl reread
 supervisorctl update
 
 # 重启服务
-supervisorctl restart okxdjtv
+supervisorctl restart okx_tv
 
 # 停止服务
-supervisorctl stop okxdjtv
+supervisorctl stop okx_tv
 
 # 启动服务
-supervisorctl start okxdjtv
+supervisorctl start okx_tv
 ```
 
 ### 日志查看
 ```bash
 # 查看程序输出
-tail -f /var/log/okxdjtv/out.log
+tail -f /var/log/okx_tv/out.log
 
 # 查看错误日志
-tail -f /var/log/okxdjtv/err.log
+tail -f /var/log/okx_tv/err.log
 ```
 
 ## 常见问题

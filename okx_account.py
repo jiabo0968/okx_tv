@@ -52,7 +52,7 @@ https_proxy = os.getenv('HTTPS_PROXY')
 flask_secret_key = generate_strong_secret_key()  # 每次启动生成新密钥
 update_env_secret_key(flask_secret_key)  # 更新到 .env 文件
 flask_host = os.getenv('FLASK_HOST', '127.0.0.1')  # 默认监听 127.0.0.1 
-flask_port = int(os.getenv('FLASK_PORT', 5000))    # 默认端口 5000
+flask_port = int(os.getenv('PORT', os.getenv('FLASK_PORT', 5000)))
 
 # 添加新的全局配置
 trade_type = os.getenv('TRADE_TYPE', 'spot')  # 默认现货
@@ -312,30 +312,24 @@ if __name__ == '__main__':
         domain = os.getenv('DOMAIN_NAME', '')
         use_https = os.getenv('USE_HTTPS', 'false').lower() == 'true'
 
-        # 强制性配置检查
         if is_production:
             if not use_domain:
                 print("错误: 生产环境必须使用域名模式!")
                 exit(1)
-            # 修改这里: 生产环境使用5000端口而不是80端口
-            flask_port = 5000  # Flask监听5000端口
-            webhook_url = f"https://{domain}/webhook"  # 强制使用https
+            webhook_url = f"https://{domain}/webhook"
             print(f"生产环境使用域名访问: {webhook_url}")
         else:
-            # 开发环境允许使用域名或IP
             if use_domain:
-                flask_port = 5000  # 修改这里,从443改为5000
                 webhook_url = f"{'https' if use_https else 'http'}://{domain}/webhook"
                 print(f"开发环境使用域名访问: {webhook_url}")
             else:
-                flask_port = 80
                 server_ip = get_host_ip()
                 webhook_url = f"http://{server_ip}/webhook"
                 print(f"开发环境使用IP访问: {webhook_url}")
 
         # 检查端口占用
         if not check_port_available(flask_host, flask_port):
-            port_type = "5000" if flask_port == 5000 else "80"  # 修改这里,从443改为5000
+            port_type = str(flask_port)
             if is_production:
                 print(f"\n错误: 生产环境必需的{port_type}端口被占用!")
             else:
@@ -365,10 +359,10 @@ if __name__ == '__main__':
         
         if use_domain:
             print(f"\nWebhook URL: {webhook_url}")
-            print("域名模式，已配置到5000端口")
+            print(f"域名模式，已配置到{flask_port}端口")
         else:
             print(f"\nWebhook URL: {webhook_url}")
-            print("IP地址模式，已配置到80端口")
+            print(f"IP地址模式，已配置到{flask_port}端口")
         print("\n===========================")
         for symbol, config in alert_configs.items():
             print(f"\n--- {symbol} 警报消息内容 ---")
